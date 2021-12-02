@@ -1,8 +1,12 @@
-import { Router } from 'express';
-import UserControllers from '../../controllers/userControllers';
+import { Router } from "express";
+import UserControllers from "../../controllers/userControllers";
 
-const userRoute = Router();
+const getUserRoute = Router();
+const userSignIn = Router();
+const userSignUp = Router();
 
-userRoute.get('/auth/user/:id', UserControllers.findOneUser);
+getUserRoute.get('/auth/user/:id', UserControllers.findOneUser);
+userSignIn.get('/user/auth/signin/', UserControllers.signIn);
+userSignUp.post('/user/auth/signup/', UserControllers.signUp);
 
-export default userRoute;
+module.exports = { getUserRoute, userSignIn, userSignUp };
