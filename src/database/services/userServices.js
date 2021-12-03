@@ -1,30 +1,12 @@
-import db from "../models";
+import db from '../models';
 
 class UserServices {
   static async getUserById(userId) {
-    const res = await db.User.findOne({ where: { userId } });
+    const result = await db.User.findOne({ raw: true, where: { userId } });
 
-    if (!res) return null;
+    if (!result) return null;
 
-    return res;
-  }
-
-  /**
-   * user sign in.
-   * @author Ntavigwa Bashombe JB
-   * @static
-   * @param {*} username
-   * @param {*} password
-   * @returns {object} data
-   * @memberof UserServices
-   */
-
-  static async userSignIn(username, password) {
-    const res = await db.User.findOne({
-      where: { username, password },
-    });
-
-    return res;
+    return result;
   }
 
   /**
@@ -39,18 +21,59 @@ class UserServices {
    * @memberof UserServices
    */
   static async userSignUp(username, email, phone, password) {
-    try {
-      const request = await db.User.create({
-        username: username,
-        email: email,
-        phone: phone,
-        password: password,
-      });
+    const result = await db.User.create({
+      username: username,
+      email: email,
+      phone: phone,
+      password: password,
+    });
+    if (!result) return null;
+    return result;
+  }
 
-      return request;
-    } catch (error) {
-      console.log(error);
-    }
+  /**
+   * user username exists.
+   * @author Ntavigwa Bashombe JB
+   * @static
+   * @param {*} username
+   * @returns {object} data
+   * @memberof UserServices
+   */
+  static async usernameExists(username) {
+    const result = await db.User.findOne({
+      raw: true,
+      where: { username },
+    });
+    if (!result) return null;
+    return result;
+  }
+
+  /**
+   * user email exists.
+   * @author Ntavigwa Bashombe JB
+   * @static
+   * @param {*} email
+   * @returns {object} data
+   * @memberof UserServices
+   */
+  static async emailExists(email) {
+    const result = await db.User.findOne({ raw: true, where: { email } });
+    if (!result) return null;
+    return result;
+  }
+
+  /**
+   * phone exists.
+   * @author Ntavigwa Bashombe JB
+   * @static
+   * @param {*} phone
+   * @returns {object} data
+   * @memberof UserServices
+   */
+  static async phoneExists(phone) {
+    const result = await db.User.findOne({ raw: true, where: { phone } });
+    if (!result) return null;
+    return result;
   }
 }
 
