@@ -1,4 +1,7 @@
-import UserServices from "../../database/services/userServices";
+import UserServices from '../../database/services/userServices';
+import Response from '../helpers/response';
+import CryptPassword from '../helpers/comparePassword';
+import Token from '../helpers/jwtAuthentication';
 
 class UserControllers {
   static async findOneUser(req, res) {
@@ -7,7 +10,7 @@ class UserControllers {
       const response = await UserServices.getUserById(userId);
 
       if (!response) {
-        res.send("Not user");
+        return Response.error(response, 409, 'user not found');
       }
 
       res.send({ ...response });
@@ -26,30 +29,36 @@ class UserControllers {
    * @memberof UserController
    */
   static async signIn(req, res) {
-    try {
-      const username = req.body.username;
-      const password = req.body.password;
+    const { username, password } = req.body;
 
-      const response = await UserServices.userSignIn(username, password);
+    const response = await UserServices.usernameExists(username);
 
-      if (!response) {
-        return res
-          .status(res.statusCode)
-          .json({ status: res.statusCode, error: "user not found" });
-      }
-
-      return res.status(res.statusCode).json({
-        status: res.statusCode,
-        message: "user sign in successfully",
-        data: response.dataValues,
-      });
-    } catch (error) {
-      console.log(error);
+    if (!response) {
+      return Response.error(res, 409, 'wrong username or password');
     }
+
+    const match = await CryptPassword.comparePswd(password, response.password);
+    if (!match) {
+      return Response.error(res, 409, 'wrong username or password');
+    }
+
+    const data = {
+      userId: response.userId,
+      username,
+      email: response.email,
+      phone: response.phone,
+    };
+
+    const dataResponse = {
+      ...data,
+      token: Token.createToken(data, process.env.PRIVATE_KEY),
+    };
+
+    return Response.sucess(res, 200, 'user sign in successfully', dataResponse);
   }
 
   /**
-   * user sign up.
+   * user sign up / check for unique username, email, password.
    * @author Ntavigwa Bashombe JB
    * @static
    * @param {*} req
@@ -58,33 +67,47 @@ class UserControllers {
    * @memberof UserController
    */
   static async signUp(req, res) {
-    try {
-      const username = req.body.username;
-      const email = req.body.email;
-      const phone = req.body.phone;
-      const password = req.body.password;
+    const { username, email, phone, password } = req.body;
 
-      const request = await UserServices.userSignUp(
-        username,
-        email,
-        phone,
-        password
-      );
+    const usernameExists = await UserServices.usernameExists(username);
+    const emailExists = await UserServices.emailExists(email);
+    const phoneExists = await UserServices.phoneExists(phone);
 
-      if (!request) {
-        res
-          .status(res.status)
-          .json({ status: res.statusCode, error: "failed to create user" });
-      }
+    if (usernameExists)
+      return Response.error(res, 409, 'Username taken already');
 
-      return res.status(res.statusCode).json({
-        status: res.statusCode,
-        message: "user sign up successfully",
-        data: request.dataValues,
-      });
-    } catch (error) {
-      console.log(error);
+    if (emailExists) return Response.error(res, 409, 'Email taken already');
+
+    if (phoneExists) return Response.error(res, 409, 'Phone taken already');
+
+    const response = await UserServices.userSignUp(
+      username,
+      email,
+      phone,
+      password
+    );
+
+    if (!response) {
+      return Response.error(res, 409, 'failed to create user');
     }
+    const data = {
+      userId: response.userId,
+      username,
+      email,
+      phone,
+    };
+
+    const dataResponse = {
+      ...data,
+      token: Token.createToken(data, process.env.PRIVATE_KEY),
+    };
+
+    return Response.sucess(
+      res,
+      201,
+      'user signin up successfully',
+      dataResponse
+    );
   }
 }
 

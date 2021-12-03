@@ -1,13 +1,11 @@
-import { getUserRoute, userSignIn, userSignUp } from "./auth/index";
+import userRoute from "./auth/index";
 
 /**
  * @class Routing
  */
 class Routing {
   static run(app) {
-    app.use(getUserRoute);
-    app.use(userSignIn);
-    app.use(userSignUp);
+    app.use(userRoute);
 
     app.get("/", (req, res) => {
       res.status(200).json({ code: 200, message: "Home Page" });

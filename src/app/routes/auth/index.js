@@ -1,12 +1,20 @@
 import { Router } from "express";
 import UserControllers from "../../controllers/userControllers";
+import asyncHandler from "../../middlewares/asyncHandler";
+import Validator from "../../middlewares/validator";
 
-const getUserRoute = Router();
-const userSignIn = Router();
-const userSignUp = Router();
+const userRoute = Router();
 
-getUserRoute.get('/auth/user/:id', UserControllers.findOneUser);
-userSignIn.get('/user/auth/signin/', UserControllers.signIn);
-userSignUp.post('/user/auth/signup/', UserControllers.signUp);
+userRoute.get("/auth/user/:id", UserControllers.findOneUser);
+userRoute.get(
+  "/user/auth/signin",
+  Validator.signin,
+  asyncHandler(UserControllers.signIn)
+);
+userRoute.post(
+  "/user/auth/signup",
+  Validator.signup,
+  asyncHandler(UserControllers.signUp)
+);
 
-module.exports = { getUserRoute, userSignIn, userSignUp };
+export default userRoute;
