@@ -1,6 +1,6 @@
-import Joi from "joi";
+import Joi from 'joi';
 
-import Validation from "./validation";
+import Validation from './validation';
 
 class Validator {
   /**
@@ -9,6 +9,7 @@ class Validator {
    * @static
    * @param {*} req
    * @param {*} res
+   * @param {*} next
    * @returns {object} data
    * @memberof Validator
    */
@@ -27,6 +28,7 @@ class Validator {
    * @static
    * @param {*} req
    * @param {*} res
+   * @param {*} next
    * @returns {object} data
    * @memberof Validator
    */
