@@ -10,7 +10,7 @@ class Response {
    * @returns {object} data
    * @memberof Response
    */
-  static sucess(res, status, message, data) {
+  static success(res, status, message, data) {
     return res.status(status).json({
       status,
       message,

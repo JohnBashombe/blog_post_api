@@ -19,7 +19,7 @@ class Validator {
       password: Joi.string().required(),
     });
 
-    Validation.joiHandler(req, res, schema, next);
+    Validation.joiHandlerBody(req, res, schema, next);
   }
 
   /**
@@ -40,7 +40,7 @@ class Validator {
       password: Joi.string().required(),
     });
 
-    Validation.joiHandler(req, res, schema, next);
+    Validation.joiHandlerBody(req, res, schema, next);
   }
 }
 

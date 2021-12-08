@@ -4,7 +4,9 @@ class UserServices {
   static async getUserById(userId) {
     const result = await db.User.findOne({ raw: true, where: { userId } });
 
-    if (!result) return null;
+    if (!result) {
+      return null;
+    }
 
     return result;
   }
