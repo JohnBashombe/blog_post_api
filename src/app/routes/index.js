@@ -1,5 +1,5 @@
 import userRoute from './auth/index';
-import BlogRouter from './blog';
+import BlogRouter from './blog/index';
 
 /**
  * @class Routing
@@ -7,7 +7,11 @@ import BlogRouter from './blog';
 class Routing {
   static run(app) {
     app.use(userRoute);
-    app.use(BlogRouter.blogCreateRoute());
+    app.use(BlogRouter.createBlog());
+    app.use(BlogRouter.fetchBlog());
+    app.use(BlogRouter.fetchBlogById());
+    app.use(BlogRouter.updateBlogById());
+    app.use(BlogRouter.deleteBlogById());
 
     app.get('/', (req, res) => {
       res.status(200).json({ code: 200, message: 'Home Page' });

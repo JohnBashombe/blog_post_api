@@ -1,7 +1,7 @@
 import UserServices from '../../database/services/userServices';
 import Response from '../helpers/response';
 import CryptPassword from '../helpers/comparePassword';
-import Token from '../helpers/jwtAuthentication';
+import Token from '../helpers/tokenUtils';
 
 class UserControllers {
   static async findOneUser(req, res) {
@@ -51,10 +51,15 @@ class UserControllers {
 
     const dataResponse = {
       ...data,
-      token: Token.createToken(data, process.env.PRIVATE_KEY),
+      token: Token.generate(data),
     };
 
-    return Response.sucess(res, 200, 'user sign in successfully', dataResponse);
+    return Response.success(
+      res,
+      200,
+      'user sign in successfully',
+      dataResponse
+    );
   }
 
   /**
@@ -99,10 +104,10 @@ class UserControllers {
 
     const dataResponse = {
       ...data,
-      token: Token.createToken(data, process.env.PRIVATE_KEY),
+      token: Token.generate(data),
     };
 
-    return Response.sucess(
+    return Response.success(
       res,
       201,
       'user signin up successfully',
