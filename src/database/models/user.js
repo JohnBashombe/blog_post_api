@@ -11,11 +11,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       username: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       phone: {
         type: Sequelize.STRING,
@@ -23,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
     },
     { tableName: 'User' }
