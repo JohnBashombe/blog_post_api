@@ -4,19 +4,62 @@ import CryptPassword from '../helpers/comparePassword';
 import Token from '../helpers/tokenUtils';
 
 class UserControllers {
-  static async findOneUser(req, res) {
-    try {
-      const userId = req.params.id;
-      const response = await UserServices.getUserById(userId);
+  /**
+   * user sign up / check for unique username, email, password.
+   * @author Ntavigwa Bashombe JB
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} data
+   * @memberof UserController
+   */
+  static async signUp(req, res) {
+    const { username, email, phone, password } = req.body;
 
-      if (!response) {
-        return Response.error(response, 409, 'user not found');
-      }
+    const usernameExists = await UserServices.usernameExists(username);
+    const emailExists = await UserServices.emailExists(email);
+    const phoneExists = await UserServices.phoneExists(phone);
 
-      res.send({ ...response });
-    } catch (error) {
-      console.log(error);
+    if (usernameExists) {
+      return Response.error(res, 409, 'Username taken already');
     }
+
+    if (emailExists) {
+      return Response.error(res, 409, 'Email taken already');
+    }
+
+    if (phoneExists) {
+      return Response.error(res, 409, 'Phone taken already');
+    }
+
+    const response = await UserServices.userSignUp(
+      username,
+      email,
+      phone,
+      password
+    );
+
+    if (!response) {
+      return Response.error(res, 409, 'failed to create user');
+    }
+    const data = {
+      userId: response.userId,
+      username,
+      email,
+      phone,
+    };
+
+    const token = Token.generate(data);
+    if (!token) {
+      return Response.error(res, 401, 'unauthorized user');
+    }
+
+    const dataResponse = {
+      ...data,
+      token,
+    };
+
+    return Response.success(res, 201, 'created', dataResponse);
   }
 
   /**
@@ -54,65 +97,7 @@ class UserControllers {
       token: Token.generate(data),
     };
 
-    return Response.success(
-      res,
-      200,
-      'user sign in successfully',
-      dataResponse
-    );
-  }
-
-  /**
-   * user sign up / check for unique username, email, password.
-   * @author Ntavigwa Bashombe JB
-   * @static
-   * @param {*} req
-   * @param {*} res
-   * @returns {object} data
-   * @memberof UserController
-   */
-  static async signUp(req, res) {
-    const { username, email, phone, password } = req.body;
-
-    const usernameExists = await UserServices.usernameExists(username);
-    const emailExists = await UserServices.emailExists(email);
-    const phoneExists = await UserServices.phoneExists(phone);
-
-    if (usernameExists)
-      return Response.error(res, 409, 'Username taken already');
-
-    if (emailExists) return Response.error(res, 409, 'Email taken already');
-
-    if (phoneExists) return Response.error(res, 409, 'Phone taken already');
-
-    const response = await UserServices.userSignUp(
-      username,
-      email,
-      phone,
-      password
-    );
-
-    if (!response) {
-      return Response.error(res, 409, 'failed to create user');
-    }
-    const data = {
-      userId: response.userId,
-      username,
-      email,
-      phone,
-    };
-
-    const dataResponse = {
-      ...data,
-      token: Token.generate(data),
-    };
-
-    return Response.success(
-      res,
-      201,
-      'user signin up successfully',
-      dataResponse
-    );
+    return Response.success(res, 200, 'success', dataResponse);
   }
 }
 

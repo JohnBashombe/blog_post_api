@@ -42,7 +42,7 @@ class Token {
     try {
       return jwt.verify(token, process.env.PRIVATE_KEY);
     } catch (error) {
-      return Response.error(res, 401, 'Token Expired');
+      return Response.error(res, 401, 'unauthorized user');
     }
   }
 

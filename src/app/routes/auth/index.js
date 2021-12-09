@@ -5,7 +5,6 @@ import Validator from '../../middlewares/authValidator';
 
 const userRoute = Router();
 
-userRoute.get('/auth/user/:id', UserControllers.findOneUser);
 userRoute.get(
   '/user/auth/signin',
   Validator.signin,

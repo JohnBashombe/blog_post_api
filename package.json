@@ -10,7 +10,13 @@
     "db:create": "npx sequelize db:create",
     "db:drop": "npx sequelize db:drop",
     "db:migrate": "npx sequelize db:migrate",
-    "db:migrate:reset": "npx sequelize db:migrate:undo:all"
+    "db:migrate:reset": "npx sequelize db:migrate:undo:all",
+    "db:create:test": "cross-env NODE_ENV=test npx sequelize db:create",
+    "db:drop:test": "cross-env NODE_ENV=test npx sequelize db:drop",
+    "db:migrate:test": "cross-env NODE_ENV=test npx sequelize db:migrate",
+    "db:migrate:reset:test": "cross-env NODE_ENV=test npx sequelize db:migrate:undo:all",
+    "pretest": "npm run db:drop:test && npm run db:create:test && npm run db:migrate:test",
+    "test": "jest --coverage --config=jest.config.js --runInBand --detectOpenHandles --forceExit"   
   },
   "repository": {
     "type": "git",
@@ -32,10 +38,12 @@
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
+    "babel-jest": "^27.4.2",
     "eslint": "^8.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
-    "sequelize-cli": "^6.3.0"
+    "sequelize-cli": "^6.3.0",
+    "supertest": "^6.1.6"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -43,6 +51,7 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "jest": "^27.4.3",
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
