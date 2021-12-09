@@ -160,7 +160,7 @@ class BlogControllers {
 
     const data = await BlogServices.fetchBlogById(blogResponse.blogId);
 
-    return Response.success(res, 200, 'update succesfull', {
+    return Response.success(res, 200, 'updated', {
       blogId: data.blogId,
       userId: data.userId,
       title: data.title,
@@ -194,7 +194,7 @@ class BlogControllers {
       return Response.error(res, 400, 'unable to delete');
     }
 
-    return Response.success(res, 200, 'blog deleted', {
+    return Response.success(res, 200, 'deleted', {
       id: getBlogById.id,
       userId: getBlogById.userId,
       title: getBlogById.title,
