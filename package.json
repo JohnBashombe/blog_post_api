@@ -15,8 +15,9 @@
     "db:drop:test": "cross-env NODE_ENV=test npx sequelize db:drop",
     "db:migrate:test": "cross-env NODE_ENV=test npx sequelize db:migrate",
     "db:migrate:reset:test": "cross-env NODE_ENV=test npx sequelize db:migrate:undo:all",
+    "db:all": "npm run db:drop && npm run db:create && npm run db:migrate",
     "pretest": "npm run db:drop:test && npm run db:create:test && npm run db:migrate:test",
-    "test": "jest --coverage --config=jest.config.js --runInBand --detectOpenHandles --forceExit"   
+    "test": "jest --coverage --config=jest.config.js --runInBand --detectOpenHandles --forceExit"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jest": "^27.4.3",
@@ -57,6 +59,6 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.15",
-    "sequelize": "^6.12.0-alpha.1"
+    "sequelize": "^6.28.0"
   }
 }

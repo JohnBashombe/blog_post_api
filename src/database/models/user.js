@@ -1,8 +1,8 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define(
-    'User',
+    "User",
     {
       userId: {
         type: Sequelize.INTEGER,
@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
     },
-    { tableName: 'User' }
+    { tableName: "User" }
   );
 
   User.beforeCreate((user) => {

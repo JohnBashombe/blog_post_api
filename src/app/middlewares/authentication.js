@@ -1,12 +1,12 @@
-import Token from '../helpers/tokenUtils';
-import Response from '../helpers/response';
-import UserServices from '../../database/services/userServices';
+import Token from "../helpers/tokenUtils";
+import Response from "../helpers/response";
+import UserServices from "../../database/services/userServices";
 
 class Auth {
   static async user(req, res, next) {
     const token = Token.extract(req, res);
     if (!token) {
-      return Response.error(res, 401, 'unauthorized token');
+      return Response.error(res, 401, "unauthorized token");
     }
 
     const decoded = Token.decode(res, token);
@@ -19,10 +19,10 @@ class Auth {
 
     const user = await UserServices.getUserById(userId);
     if (!user) {
-      return Response.error(res, 401, 'unauthorized token');
+      return Response.error(res, 401, "unauthorized token");
     }
 
-    req['currentUser'] = user;
+    req["currentUser"] = user;
 
     next();
   }

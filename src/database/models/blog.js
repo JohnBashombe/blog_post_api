@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const Blog = sequelize.define(
-    'Blog',
+    "Blog",
     {
       blogId: {
         type: Sequelize.INTEGER,
@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
     },
-    { tableName: 'Blog' }
+    { tableName: "Blog" }
   );
 
   return Blog;

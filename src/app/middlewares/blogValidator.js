@@ -1,5 +1,5 @@
-import Joi from 'joi';
-import Validation from './validation';
+import Joi from "joi";
+import Validation from "./validation";
 
 class BlogValidator {
   /**

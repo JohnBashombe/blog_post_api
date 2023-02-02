@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-import Sequelize from 'sequelize';
-import dbConfig from '../config/config';
+import fs from "fs";
+import path from "path";
+import Sequelize from "sequelize";
+import dbConfig from "../config/config";
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || "development";
 const db = {};
 const config = dbConfig[env];
 
@@ -14,12 +14,13 @@ const sequelize = config.use_env_variable
 
 fs.readdirSync(__dirname)
   .filter(
-    (file) => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js',
+    (file) =>
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
   )
   .forEach((file) => {
     const model = require(path.join(__dirname, file))(
       sequelize,
-      Sequelize.DataTypes,
+      Sequelize.DataTypes
     );
     db[model.name] = model;
   });
