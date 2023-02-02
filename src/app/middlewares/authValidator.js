@@ -1,6 +1,6 @@
-import Joi from 'joi';
+import Joi from "joi";
 
-import Validation from './validation';
+import Validation from "./validation";
 
 class Validator {
   /**

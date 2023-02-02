@@ -1,4 +1,4 @@
-import db from '../models';
+import db from "../models";
 
 class UserServices {
   static async getUserById(userId) {
